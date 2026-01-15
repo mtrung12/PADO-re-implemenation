@@ -5,8 +5,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, pipeline
 from .prompts import create_message
 
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 def get_HF_pipeline(model_name: str):
     # Quantization config
@@ -43,6 +42,8 @@ def generate_response(system_prompt_str: str, user_prompt_str: str, model, tempe
 
     message = create_message(system_prompt_str, user_prompt_str)
     if model.startswith("gpt"):
+        load_dotenv()
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         resp = client.chat.completions.create(
             model=model,
             messages=message,
