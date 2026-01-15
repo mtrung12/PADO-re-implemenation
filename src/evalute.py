@@ -46,7 +46,7 @@ def pado_predict(text: str, trait_short: str, prompt_type='pado', use_gpt=False)
     else:
         return 'unknown'
 
-def evaluate_dataframe(df: pd.DataFrame, text_column: str, use_gpt=False, report_path: str = None) -> pd.DataFrame:
+def evaluate_dataframe(df: pd.DataFrame, use_gpt=False, report_path: str = "classification_report.txt", text_column: str = "text") -> pd.DataFrame:
     results_df = df.copy()
 
     if report_path:
