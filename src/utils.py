@@ -3,7 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, pipeline
-from .prompts import create_message
+from .prompts import create_message_openai, create_message_HF
 
 
 
@@ -40,8 +40,9 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 256):
 def generate_response(system_prompt_str: str, user_prompt_str: str, model, temperature: float = 0.3,
     top_p: float = 0.95, max_new_tokens: int = None):
 
-    message = create_message(system_prompt_str, user_prompt_str)
+    
     if model.startswith("gpt"):
+        message = create_message_openai(system_prompt_str, user_prompt_str)
         load_dotenv()
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         
@@ -56,6 +57,7 @@ def generate_response(system_prompt_str: str, user_prompt_str: str, model, tempe
 
         resp = client.chat.completions.create(**params).choices[0].message.content
     else:
+        message = create_message_HF(system_prompt_str, user_prompt_str)
         pipe = get_HF_pipeline(model, max_new_tokens=max_new_tokens if max_new_tokens is not None else 512)
         prompt = pipe.tokenizer.apply_chat_template(
         message, 

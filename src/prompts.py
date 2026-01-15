@@ -160,7 +160,7 @@ def judgement_prompt_build(ctrait, explanation1, explanation2):
     )
     return sys_p, usr_p
 
-def create_message(system_prompt_str, user_prompt_str):
+def create_message_openai(system_prompt_str, user_prompt_str):
     return [
         {
             "role": "system",
@@ -179,5 +179,17 @@ def create_message(system_prompt_str, user_prompt_str):
                     "text": user_prompt_str
                 }
             ],
+        },
+    ]
+    
+def create_message_HF(system_prompt_str, user_prompt_str):
+    return [
+        {
+            "role": "system",
+            "content": system_prompt_str,
+        },
+        {
+            "role": "user",
+            "content": user_prompt_str,
         },
     ]
