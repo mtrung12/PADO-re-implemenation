@@ -160,8 +160,24 @@ def judgment_prompt_build(ctrait, explanation1, explanation2):
     )
     return sys_p, usr_p
 
-def concat_prompt(system_prompt, user_prompt):
+def create_message(system_prompt_str, user_prompt_str):
     return [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
+        {
+            "role": "system",
+            "content": [
+                {
+                    "type": "text", 
+                    "text": system_prompt_str
+                }
+            ],
+        },
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text", 
+                    "text": user_prompt_str
+                }
+            ],
+        },
     ]
