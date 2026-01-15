@@ -27,7 +27,7 @@ def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado
     explanation_low = generate_explaination(trait_full, text, model_name, induce='low', prompt_type=prompt_type, max_new_tokens=max_new_tokens)
 
     # Generate a judgement based on the two explanations.
-    judgement_text = generate_judgement(trait_full, explanation_high, explanation_low, model_name, max_new_tokens=max_new_tokens)
+    judgement_text = generate_judgement(trait_full, text, explanation_high, explanation_low, model_name, max_new_tokens=max_new_tokens)
 
     # Extract the final prediction from the judgement text.
     prediction = extract_judgement_prediction(judgement_text)
