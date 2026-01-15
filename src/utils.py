@@ -7,7 +7,7 @@ from .prompts import create_message
 
 
 
-def get_HF_pipeline(model_name: str):
+def get_HF_pipeline(model_name: str, max_new_tokens: int = 256):
     # Quantization config
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -29,7 +29,7 @@ def get_HF_pipeline(model_name: str):
         "text-generation",
         model=model,
         tokenizer=tokenizer,
-        max_new_tokens=256,   # Enough for JSON output
+        max_new_tokens=max_new_tokens,   # Use the passed argument
         temperature=0.1,      # Keep it factual/consistent
         do_sample=True,
         return_full_text=False
@@ -38,20 +38,25 @@ def get_HF_pipeline(model_name: str):
 
 
 def generate_response(system_prompt_str: str, user_prompt_str: str, model, temperature: float = 0.3,
-    top_p: float = 0.95):
+    top_p: float = 0.95, max_new_tokens: int = None):
 
     message = create_message(system_prompt_str, user_prompt_str)
     if model.startswith("gpt"):
         load_dotenv()
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        resp = client.chat.completions.create(
-            model=model,
-            messages=message,
-            temperature=temperature,
-            top_p=top_p,
-        ).choices[0].message.content
+        
+        params = {
+            "model": model,
+            "messages": message,
+            "temperature": temperature,
+            "top_p": top_p,
+        }
+        if max_new_tokens is not None:
+            params["max_tokens"] = max_new_tokens
+
+        resp = client.chat.completions.create(**params).choices[0].message.content
     else:
-        pipe = get_HF_pipeline(model)
+        pipe = get_HF_pipeline(model, max_new_tokens=max_new_tokens if max_new_tokens is not None else 256)
         prompt = pipe.tokenizer.apply_chat_template(
         message, 
         tokenize=False, 

@@ -149,7 +149,7 @@ def explain_prompt_build(ctrait, ctext, induce='high', prompt_type='pado'):
         
     return sys_p, usr_p
 
-def judgment_prompt_build(ctrait, explanation1, explanation2):
+def judgement_prompt_build(ctrait, explanation1, explanation2):
     explanations = [explanation1, explanation2]
     explain_1, explain_2 = random.sample(explanations, k=2)
     sys_p = JUDGE_SYSTEM_PROMPT
