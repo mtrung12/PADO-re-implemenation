@@ -16,26 +16,20 @@ TRAIT_MAP = {
 # The traits to evaluate, corresponding to dataframe columns
 BIG_FIVE_TRAITS = list(TRAIT_MAP.keys())
 
-def pado_predict(text: str, trait_short: str, prompt_type='pado', use_gpt=False) -> str:
+def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado'):
     if trait_short not in TRAIT_MAP:
         raise ValueError(f"Invalid trait_short: {trait_short}. Expected one of {BIG_FIVE_TRAITS}")
     
     trait_full = TRAIT_MAP[trait_short]
 
-    # 1. Generate explanations for both high and low induction scenarios.
-    explanation_high = generate_explaination(
-        trait_full, text, induce='high', prompt_type=prompt_type, use_gpt=use_gpt
-    )
-    explanation_low = generate_explaination(
-        trait_full, text, induce='low', prompt_type=prompt_type, use_gpt=use_gpt
-    )
+    # Generate explanations for both high and low induction scenarios.
+    explanation_high = generate_explaination(trait_full, text, model_name, induce='high', prompt_type=prompt_type)
+    explanation_low = generate_explaination(trait_full, text, model_name, induce='low', prompt_type=prompt_type)
 
-    # 2. Generate a judgement based on the two explanations.
-    judgement_text = generate_judgement(
-        trait_full, explanation_high, explanation_low, use_gpt=use_gpt
-    )
+    # Generate a judgement based on the two explanations.
+    judgement_text = generate_judgement(trait_full, explanation_high, explanation_low, model_name)
 
-    # 3. Extract the final prediction from the judgement text.
+    # Extract the final prediction from the judgement text.
     prediction = extract_judgement_prediction(judgement_text)
 
     # Standardize the output to lowercase 'high' or 'low'.
@@ -46,7 +40,7 @@ def pado_predict(text: str, trait_short: str, prompt_type='pado', use_gpt=False)
     else:
         return 'unknown'
 
-def evaluate_dataframe(df: pd.DataFrame, use_gpt=False, report_path: str = "classification_report.txt", text_column: str = "text") -> pd.DataFrame:
+def evaluate_dataframe(df: pd.DataFrame, model_name, report_path: str = "classification_report.txt", text_column: str = "text") -> pd.DataFrame:
     results_df = df.copy()
 
     if report_path:
@@ -61,7 +55,7 @@ def evaluate_dataframe(df: pd.DataFrame, use_gpt=False, report_path: str = "clas
         
         # Apply the prediction function to the text column.
         results_df[pred_column_name] = results_df[text_column].progress_apply(
-            lambda text: pado_predict(text, trait_short, use_gpt=use_gpt)
+            lambda text: pado_predict(text, trait_short, model_name)
         )
         
         # If ground truth exists, calculate and print accuracy for the trait.

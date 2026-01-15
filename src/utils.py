@@ -38,17 +38,11 @@ def get_HF_pipeline(model_name: str):
     return pipe
 
 
-def generate_response(
-    system_prompt_str: str,
-    user_prompt_str: str,
-    model: str = "gpt-4o",
-    temperature: float = 0.3,
-    top_p: float = 0.95,
-    use_gpt = False,
-) -> str:
+def generate_response(system_prompt_str: str, user_prompt_str: str, model, temperature: float = 0.3,
+    top_p: float = 0.95):
 
     message = create_message(system_prompt_str, user_prompt_str)
-    if use_gpt:
+    if model.startswith("gpt"):
         resp = client.chat.completions.create(
             model=model,
             messages=message,
