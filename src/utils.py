@@ -56,7 +56,7 @@ def generate_response(system_prompt_str: str, user_prompt_str: str, model, tempe
 
         resp = client.chat.completions.create(**params).choices[0].message.content
     else:
-        pipe = get_HF_pipeline(model, max_new_tokens=max_new_tokens if max_new_tokens is not None else 256)
+        pipe = get_HF_pipeline(model, max_new_tokens=max_new_tokens if max_new_tokens is not None else 512)
         prompt = pipe.tokenizer.apply_chat_template(
         message, 
         tokenize=False, 
