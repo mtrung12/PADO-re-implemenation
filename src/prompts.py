@@ -159,3 +159,9 @@ def judgment_prompt_build(ctrait, explanation1, explanation2):
         explain_2 = explain_2
     )
     return sys_p, usr_p
+
+def concat_prompt(system_prompt, user_prompt):
+    return [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
+    ]

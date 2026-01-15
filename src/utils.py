@@ -45,3 +45,10 @@ def generate_response(
     ).choices[0].message.content
 
     return resp
+
+def extract_label_from_response(response: str) -> str:
+    """
+    Extracts the label ('high' or 'low') from the model
+    response string.
+    """
+    
