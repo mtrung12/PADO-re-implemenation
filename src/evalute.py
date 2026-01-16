@@ -3,6 +3,7 @@ from tqdm import tqdm
 from .explaination import generate_explaination
 from .judgement import generate_judgement, extract_judgement_prediction
 from sklearn.metrics import classification_report
+from .utils import get_HF_pipeline
 
 # Mapping from dataframe columns to full trait names
 TRAIT_MAP = {
@@ -16,7 +17,7 @@ TRAIT_MAP = {
 # The traits to evaluate, corresponding to dataframe columns
 BIG_FIVE_TRAITS = list(TRAIT_MAP.keys())
 
-def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado', max_new_tokens: int = None):
+def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado', max_new_tokens: int = None, pipeline = None):
     if trait_short not in TRAIT_MAP:
         raise ValueError(f"Invalid trait_short: {trait_short}. Expected one of {BIG_FIVE_TRAITS}")
     
@@ -42,11 +43,16 @@ def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado
 
 def evaluate_dataframe(df: pd.DataFrame, model_name, report_path: str = "classification_report.txt", text_column: str = "text", max_new_tokens: int = None) -> pd.DataFrame:
     results_df = df.copy()
-
+    
     if report_path:
         with open(report_path, 'w') as f:
             pass  # Create/Clear the file
     
+    if not model_name.startswith("gpt"):
+        pipeline = get_HF_pipeline(model_name, max_new_tokens=max_new_tokens if max_new_tokens is not None else 512)
+    else:
+        pipeline = None
+        
     for trait_short in BIG_FIVE_TRAITS:
         tqdm.pandas(desc=f"Evaluating {TRAIT_MAP[trait_short]}")
         
@@ -55,7 +61,7 @@ def evaluate_dataframe(df: pd.DataFrame, model_name, report_path: str = "classif
         
         # Apply the prediction function to the text column.
         results_df[pred_column_name] = results_df[text_column].progress_apply(
-            lambda text: pado_predict(text, trait_short, model_name, max_new_tokens=max_new_tokens)
+            lambda text: pado_predict(text, trait_short, model_name, max_new_tokens=max_new_tokens, pipeline=pipeline)
         )
         
         # If ground truth exists, calculate and print accuracy for the trait.

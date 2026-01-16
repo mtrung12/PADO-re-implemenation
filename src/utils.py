@@ -38,7 +38,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 256):
 
 
 def generate_response(system_prompt_str: str, user_prompt_str: str, model, temperature: float = 0.3,
-    top_p: float = 0.95, max_new_tokens: int = None):
+    top_p: float = 0.95, max_new_tokens: int = None, pipeline = None):
 
     
     if model.startswith("gpt"):
@@ -58,13 +58,12 @@ def generate_response(system_prompt_str: str, user_prompt_str: str, model, tempe
         resp = client.chat.completions.create(**params).choices[0].message.content
     else:
         message = create_message_HF(system_prompt_str, user_prompt_str)
-        pipe = get_HF_pipeline(model, max_new_tokens=max_new_tokens if max_new_tokens is not None else 512)
-        prompt = pipe.tokenizer.apply_chat_template(
+        prompt = pipeline.tokenizer.apply_chat_template(
         message, 
         tokenize=False, 
         add_generation_prompt=True
         )
-        outputs = pipe(prompt)
+        outputs = pipeline(prompt)
         resp = outputs[0]['generated_text'] 
         
     return resp
