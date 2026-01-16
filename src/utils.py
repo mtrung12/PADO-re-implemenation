@@ -7,7 +7,7 @@ from .prompts import create_message_openai, create_message_HF
 
 
 
-def get_HF_pipeline(model_name: str, max_new_tokens: int = 256):
+def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
     # Quantization config
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
