@@ -48,7 +48,7 @@ def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado
     else:
         return 'unknown'
 
-def evaluate_dataframe(df: pd.DataFrame, model_name: str, report_path: str = "classification_report.txt", text_column: str = "text", max_new_tokens: int = None, verbose: bool = False, batch_size: int = 8) -> pd.DataFrame:
+def evaluate_dataframe(df: pd.DataFrame, model_name: str, report_path: str = "classification_report.txt", text_column: str = "text", max_new_tokens: int = None, verbose: bool = False, batch_size: int = 1) -> pd.DataFrame:
     results_df = df.copy()
     
     if report_path:
