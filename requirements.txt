@@ -1,0 +1,8 @@
+pandas
+tqdm
+scikit-learn
+openai
+python-dotenv
+torch
+transformers
+bitsandbytes
