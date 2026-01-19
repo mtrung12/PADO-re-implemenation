@@ -17,17 +17,24 @@ TRAIT_MAP = {
 # The traits to evaluate, corresponding to dataframe columns
 BIG_FIVE_TRAITS = list(TRAIT_MAP.keys())
 
-def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado', max_new_tokens: int = None, pipeline = None):
+def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado', max_new_tokens: int = None, pipeline = None, progress_verbose: bool = True, item_index: int = 0, total_items: int = 0):
     if trait_short not in TRAIT_MAP:
         raise ValueError(f"Invalid trait_short: {trait_short}. Expected one of {BIG_FIVE_TRAITS}")
     
     trait_full = TRAIT_MAP[trait_short]
 
     # Generate explanations for both high and low induction scenarios.
+    if progress_verbose:
+        tqdm.write(f"[{item_index + 1}/{total_items}] Trait {trait_full}: High explanation...")
     explanation_high = generate_explaination(trait_full, text, model_name, induce='high', prompt_type=prompt_type, max_new_tokens=max_new_tokens, pipeline=pipeline)
+    
+    if progress_verbose:
+        tqdm.write(f"[{item_index + 1}/{total_items}] Trait {trait_full}: Low explanation...")
     explanation_low = generate_explaination(trait_full, text, model_name, induce='low', prompt_type=prompt_type, max_new_tokens=max_new_tokens, pipeline=pipeline)
 
     # Generate a judgement based on the two explanations.
+    if progress_verbose:
+        tqdm.write(f"[{item_index + 1}/{total_items}] Trait {trait_full}: Judgement...")
     judgement_text = generate_judgement(trait_full, text, explanation_high, explanation_low, model_name, max_new_tokens=max_new_tokens, pipeline=pipeline)
 
     # Extract the final prediction from the judgement text.
@@ -41,7 +48,7 @@ def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado
     else:
         return 'unknown'
 
-def evaluate_dataframe(df: pd.DataFrame, model_name, report_path: str = "classification_report.txt", text_column: str = "text", max_new_tokens: int = None) -> pd.DataFrame:
+def evaluate_dataframe(df: pd.DataFrame, model_name, report_path: str = "classification_report.txt", text_column: str = "text", max_new_tokens: int = None, verbose: bool = False) -> pd.DataFrame:
     results_df = df.copy()
     
     if report_path:
@@ -54,15 +61,32 @@ def evaluate_dataframe(df: pd.DataFrame, model_name, report_path: str = "classif
         pipeline = None
         
     for trait_short in BIG_FIVE_TRAITS:
-        tqdm.pandas(desc=f"Evaluating {TRAIT_MAP[trait_short]}")
-        
         # Create a new column for the predictions of the current trait.
         pred_column_name = f'{trait_short}_pred'
-        
-        # Apply the prediction function to the text column.
-        results_df[pred_column_name] = results_df[text_column].progress_apply(
-            lambda text: pado_predict(text, trait_short, model_name, max_new_tokens=max_new_tokens, pipeline=pipeline)
-        )
+
+        if verbose:
+            predictions = []
+            total_items = len(results_df)
+            for i, row in tqdm(results_df.iterrows(), total=total_items, desc=f"Evaluating {TRAIT_MAP[trait_short]}"):
+                text = row[text_column]
+                pred = pado_predict(
+                    text, 
+                    trait_short, 
+                    model_name, 
+                    max_new_tokens=max_new_tokens, 
+                    pipeline=pipeline, 
+                    progress_verbose=True, 
+                    item_index=i, 
+                    total_items=total_items
+                )
+                predictions.append(pred)
+            results_df[pred_column_name] = predictions
+        else:
+            tqdm.pandas(desc=f"Evaluating {TRAIT_MAP[trait_short]}")
+            # Apply the prediction function to the text column.
+            results_df[pred_column_name] = results_df[text_column].progress_apply(
+                lambda text: pado_predict(text, trait_short, model_name, max_new_tokens=max_new_tokens, pipeline=pipeline)
+            )
         
         # If ground truth exists, calculate and print accuracy for the trait.
         if trait_short in results_df.columns:
