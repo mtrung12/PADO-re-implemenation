@@ -1,4 +1,5 @@
 import random
+from typing import List, Union
 
 # Inducing prompts
 HIGH_INDUCE = {
@@ -123,42 +124,73 @@ Explainer A: {explain_1}
 Explainer B: {explain_2}
 """
 
-def explain_prompt_build(ctrait, ctext, induce='high', prompt_type='pado'):
+def explain_prompt_build(ctrait: str, ctext: Union[str, List[str]], induce: str = 'high', prompt_type: str = 'pado'):
     sys_p = ""
-    usr_p = ""
-    
-    if prompt_type == 'pado': 
-        usr_p = PADO_INFERENCE_USER_PROMPT.format(trait = ctrait, text = ctext)
-        if induce == 'high':  
-            sys_p = PADO_INFERENCE_SYSTEM_PROMPT.format(personality_inducing = HIGH_INDUCE[ctrait])
+    is_batch = isinstance(ctext, list)
+
+    if prompt_type == 'pado':
+        if induce == 'high':
+            sys_p = PADO_INFERENCE_SYSTEM_PROMPT.format(personality_inducing=HIGH_INDUCE[ctrait])
         else:
-            sys_p = PADO_INFERENCE_SYSTEM_PROMPT.format(personality_inducing = LOW_INDUCE[ctrait])
+            sys_p = PADO_INFERENCE_SYSTEM_PROMPT.format(personality_inducing=LOW_INDUCE[ctrait])
+        
+        if is_batch:
+            usr_p = [PADO_INFERENCE_USER_PROMPT.format(trait=ctrait, text=t) for t in ctext]
+        else:
+            usr_p = PADO_INFERENCE_USER_PROMPT.format(trait=ctrait, text=ctext)
+
     elif prompt_type == 'zero':
-        sys_p = ZERO_INFERENCE_SYSTEM_PROMPT.format(trait = ctrait)
-        usr_p = ZERO_INFERENCE_USER_PROMPT.format(text = ctext)
+        sys_p = ZERO_INFERENCE_SYSTEM_PROMPT.format(trait=ctrait)
+        if is_batch:
+            usr_p = [ZERO_INFERENCE_USER_PROMPT.format(text=t) for t in ctext]
+        else:
+            usr_p = ZERO_INFERENCE_USER_PROMPT.format(text=ctext)
+
     elif prompt_type == 'one':
         sys_p = ONE_INFERENCE_SYSTEM_PROMPT.format(
-            trait = ctrait,
-            example_text = "I love spending time with my friends and meeting new people.",
-            example_label = "high"
+            trait=ctrait,
+            example_text="I love spending time with my friends and meeting new people.",
+            example_label="high"
         )
-        usr_p = ONE_INFERENCE_USER_PROMPT.format(text = ctext)
+        if is_batch:
+            usr_p = [ONE_INFERENCE_USER_PROMPT.format(text=t) for t in ctext]
+        else:
+            usr_p = ONE_INFERENCE_USER_PROMPT.format(text=ctext)
+
     elif prompt_type == 'cot':
-        sys_p = COT_INFERENCE_SYSTEM_PROMPT.format(trait = ctrait)
-        usr_p = COT_INFERENCE_USER_PROMPT.format(text = ctext)
-        
+        sys_p = COT_INFERENCE_SYSTEM_PROMPT.format(trait=ctrait)
+        if is_batch:
+            usr_p = [COT_INFERENCE_USER_PROMPT.format(text=t) for t in ctext]
+        else:
+            usr_p = COT_INFERENCE_USER_PROMPT.format(text=ctext)
+
     return sys_p, usr_p
 
-def judgement_prompt_build(ctrait, text, explanation1, explanation2):
-    explanations = [explanation1, explanation2]
-    explain_1, explain_2 = random.sample(explanations, k=2)
+def judgement_prompt_build(ctrait: str, text: Union[str, List[str]], explanation1: Union[str, List[str]], explanation2: Union[str, List[str]]):
     sys_p = JUDGE_SYSTEM_PROMPT
-    usr_p = JUDGE_USER_PROMPT.format(
-        trait = ctrait,
-        text = text,
-        explain_1 = explain_1,
-        explain_2 = explain_2
-    )
+    is_batch = isinstance(text, list)
+
+    if is_batch:
+        usr_p = []
+        for i in range(len(text)):
+            explanations = [explanation1[i], explanation2[i]]
+            explain_1, explain_2 = random.sample(explanations, k=2)
+            usr_p.append(JUDGE_USER_PROMPT.format(
+                trait=ctrait,
+                text=text[i],
+                explain_1=explain_1,
+                explain_2=explain_2
+            ))
+    else:
+        explanations = [explanation1, explanation2]
+        explain_1, explain_2 = random.sample(explanations, k=2)
+        usr_p = JUDGE_USER_PROMPT.format(
+            trait=ctrait,
+            text=text,
+            explain_1=explain_1,
+            explain_2=explain_2
+        )
+        
     return sys_p, usr_p
 
 def create_message_openai(system_prompt_str, user_prompt_str):
