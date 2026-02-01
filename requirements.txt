@@ -3,8 +3,10 @@ tqdm
 scikit-learn
 openai
 python-dotenv
-torch-2.8.0
+torch
 transformers
 bitsandbytes
 google-generativeai
 nest-asyncio
+accelerate
+jinja2

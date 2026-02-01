@@ -1,0 +1,60 @@
+Model: meta-llama/Meta-Llama-3-8B-Instruct
+Total Records: 25
+
+Classification Report for Extraversion:
+              precision    recall  f1-score   support
+
+        high       0.35      0.89      0.50         9
+         low       0.00      0.00      0.00        16
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.32        25
+   macro avg       0.12      0.30      0.17        25
+weighted avg       0.13      0.32      0.18        25
+
+
+Classification Report for Neuroticism:
+              precision    recall  f1-score   support
+
+        high       0.45      0.91      0.61        11
+         low       0.67      0.14      0.24        14
+
+    accuracy                           0.48        25
+   macro avg       0.56      0.53      0.42        25
+weighted avg       0.57      0.48      0.40        25
+
+
+Classification Report for Agreeableness:
+              precision    recall  f1-score   support
+
+        high       0.58      0.69      0.63        16
+         low       0.17      0.11      0.13         9
+
+    accuracy                           0.48        25
+   macro avg       0.37      0.40      0.38        25
+weighted avg       0.43      0.48      0.45        25
+
+
+Classification Report for Conscientiousness:
+              precision    recall  f1-score   support
+
+        high       0.73      0.65      0.69        17
+         low       0.44      0.50      0.47         8
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.60        25
+   macro avg       0.39      0.38      0.39        25
+weighted avg       0.64      0.60      0.62        25
+
+
+Classification Report for Openness:
+              precision    recall  f1-score   support
+
+        high       0.65      0.94      0.77        16
+         low       0.50      0.11      0.18         9
+
+    accuracy                           0.64        25
+   macro avg       0.58      0.52      0.48        25
+weighted avg       0.60      0.64      0.56        25
+
+
