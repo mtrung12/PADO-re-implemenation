@@ -1,0 +1,63 @@
+Model: gpt-4o
+Total Records: 25
+
+Classification Report for Extraversion:
+              precision    recall  f1-score   support
+
+        high       0.35      0.67      0.46         9
+         low       0.80      0.25      0.38        16
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.40        25
+   macro avg       0.38      0.31      0.28        25
+weighted avg       0.64      0.40      0.41        25
+
+
+Classification Report for Neuroticism:
+              precision    recall  f1-score   support
+
+        high       0.35      0.55      0.43        11
+         low       0.33      0.07      0.12        14
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.28        25
+   macro avg       0.23      0.21      0.18        25
+weighted avg       0.34      0.28      0.25        25
+
+
+Classification Report for Agreeableness:
+              precision    recall  f1-score   support
+
+        high       0.77      0.62      0.69        16
+         low       0.57      0.44      0.50         9
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.56        25
+   macro avg       0.45      0.36      0.40        25
+weighted avg       0.70      0.56      0.62        25
+
+
+Classification Report for Conscientiousness:
+              precision    recall  f1-score   support
+
+        high       0.50      0.18      0.26        17
+         low       0.21      0.38      0.27         8
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.24        25
+   macro avg       0.24      0.18      0.18        25
+weighted avg       0.41      0.24      0.26        25
+
+
+Classification Report for Openness:
+              precision    recall  f1-score   support
+
+        high       0.75      0.75      0.75        16
+         low       0.50      0.11      0.18         9
+     unknown       0.00      0.00      0.00         0
+
+    accuracy                           0.52        25
+   macro avg       0.42      0.29      0.31        25
+weighted avg       0.66      0.52      0.55        25
+
+

@@ -1,5 +1,6 @@
 import random
 from typing import List, Union
+import json
 
 # Inducing prompts
 HIGH_INDUCE = {
@@ -16,49 +17,6 @@ LOW_INDUCE = {
     "Neuroticism": "You are a stable person, with a calm and contented demeanor. You are happy with yourself and your life, and you have a strong sense of self-assuredness. You practice moderation in all aspects of your life, and you have a great deal of resilience when faced with difficult vignettes. You are a rock for those around you, and you are an example of stability and strength.",
     "Openness": "You are a closed person, and it shows in many ways. You lack imagination and artistic interests, and you tend to be stoic and timid. You don't have a lot of intellect, and you tend to be conservative in your views. You don't take risks and you don't like to try new things. You prefer to stay in your comfort zone and don't like to venture out. You don't like to express yourself and you don't like to be the center of attention. You don't like to take chances and you don't like to be challenged. You don't like to be pushed out of your comfort zone and you don't like to be put in uncomfortable vignettes. You prefer to stay in the background and not draw attention to yourself.",
 }
-
-# ZERO SHOT INFERENCE PROMPTS
-ZERO_INFERENCE_SYSTEM_PROMPT = """
-Based on a human-generated text, predict whether the person’s perspective of
-{trait} (one of the Big Five personality traits) is ‘high’ or ‘low.’
-Output format:
-Prediction
-- ‘high’ or ‘low’
-"""
-ZERO_INFERENCE_USER_PROMPT = """
-Text: {text}
-"""
-
-# ONE-SHOT INFERENCE PROMPTS
-ONE_INFERENCE_SYSTEM_PROMPT = """
-Based on a human-generated text, predict whether the person’s perspective of
-{trait} (one of the Big Five personality traits)
-is ‘high’ or ‘low.’
-Example:
-Text: {example text}
-Prediction
-- {example label}
-Output format:
-Prediction
-- ‘high’ or ‘low’
-"""
-ONE_INFERENCE_USER_PROMPT = """
-Text: {text}
-"""
-
-# CoT INFERENCE PROMPTS
-COT_INFERENCE_SYSTEM_PROMPT = """
-Based on a human-generated text, predict whether the person’s
-perspective of {trait} (one of the Big Five personality traits)
-is ‘high’ or ‘low’.
-Let’s think step-by-step
-Output format:
-Prediction
-- ‘high’ or ‘low’
-"""
-COT_INFERENCE_USER_PROMPT = """
-Text: {text}
-"""
 
 # PADO INFERENCE PROMPTS (Both Inducing and Reasoning included)
 PADO_INFERENCE_SYSTEM_PROMPT = """You are an explanation agent that analyzes people’s personalities.
@@ -89,6 +47,7 @@ Output format:
 
 Text: {text}"""
 
+
 # JUDGEMENT PROMPT
 JUDGE_SYSTEM_PROMPT = """
 You are a comparative agent responsible for comparing the analyses of two
@@ -110,7 +69,7 @@ a) Based on the comparative analysis, determine which explainer’s overall
 analysis better reflects the user’s trait.
 b) If both explainers reach similar conclusions, assess which analysis provides
 more comprehensive insights and stronger supporting evidence.
-3. Final Judgment: Conclude whether the user’s trait is high or low, and briefly
+3. Final Judgement: Conclude whether the user’s trait is high or low, and briefly
 explain your reasoning based on the stronger analysis.
 Output format:
 1. Comparative Analysis
@@ -126,70 +85,30 @@ Explainer B: {explain_2}
 
 def explain_prompt_build(ctrait: str, ctext: Union[str, List[str]], induce: str = 'high', prompt_type: str = 'pado'):
     sys_p = ""
-    is_batch = isinstance(ctext, list)
-
+    # The is_batch case is no longer triggered from evaluate_dataframe
     if prompt_type == 'pado':
         if induce == 'high':
             sys_p = PADO_INFERENCE_SYSTEM_PROMPT.format(personality_inducing=HIGH_INDUCE[ctrait])
         else:
             sys_p = PADO_INFERENCE_SYSTEM_PROMPT.format(personality_inducing=LOW_INDUCE[ctrait])
-        
-        if is_batch:
-            usr_p = [PADO_INFERENCE_USER_PROMPT.format(trait=ctrait, text=t) for t in ctext]
-        else:
-            usr_p = PADO_INFERENCE_USER_PROMPT.format(trait=ctrait, text=ctext)
+        usr_p = PADO_INFERENCE_USER_PROMPT.format(trait=ctrait, text=ctext)
 
-    elif prompt_type == 'zero':
-        sys_p = ZERO_INFERENCE_SYSTEM_PROMPT.format(trait=ctrait)
-        if is_batch:
-            usr_p = [ZERO_INFERENCE_USER_PROMPT.format(text=t) for t in ctext]
-        else:
-            usr_p = ZERO_INFERENCE_USER_PROMPT.format(text=ctext)
-
-    elif prompt_type == 'one':
-        sys_p = ONE_INFERENCE_SYSTEM_PROMPT.format(
-            trait=ctrait,
-            example_text="I love spending time with my friends and meeting new people.",
-            example_label="high"
-        )
-        if is_batch:
-            usr_p = [ONE_INFERENCE_USER_PROMPT.format(text=t) for t in ctext]
-        else:
-            usr_p = ONE_INFERENCE_USER_PROMPT.format(text=ctext)
-
-    elif prompt_type == 'cot':
-        sys_p = COT_INFERENCE_SYSTEM_PROMPT.format(trait=ctrait)
-        if is_batch:
-            usr_p = [COT_INFERENCE_USER_PROMPT.format(text=t) for t in ctext]
-        else:
-            usr_p = COT_INFERENCE_USER_PROMPT.format(text=ctext)
-
+    # Note: Other prompt types like zero, one, cot are not updated for batching
+    # as the main evaluation logic uses 'pado'.
+    
     return sys_p, usr_p
 
 def judgement_prompt_build(ctrait: str, text: Union[str, List[str]], explanation1: Union[str, List[str]], explanation2: Union[str, List[str]]):
+    # The is_batch case is no longer triggered from evaluate_dataframe
     sys_p = JUDGE_SYSTEM_PROMPT
-    is_batch = isinstance(text, list)
-
-    if is_batch:
-        usr_p = []
-        for i in range(len(text)):
-            explanations = [explanation1[i], explanation2[i]]
-            explain_1, explain_2 = random.sample(explanations, k=2)
-            usr_p.append(JUDGE_USER_PROMPT.format(
-                trait=ctrait,
-                text=text[i],
-                explain_1=explain_1,
-                explain_2=explain_2
-            ))
-    else:
-        explanations = [explanation1, explanation2]
-        explain_1, explain_2 = random.sample(explanations, k=2)
-        usr_p = JUDGE_USER_PROMPT.format(
-            trait=ctrait,
-            text=text,
-            explain_1=explain_1,
-            explain_2=explain_2
-        )
+    explanations = [explanation1, explanation2]
+    explain_1, explain_2 = random.sample(explanations, k=2)
+    usr_p = JUDGE_USER_PROMPT.format(
+        trait=ctrait,
+        text=text,
+        explain_1=explain_1,
+        explain_2=explain_2
+    )
         
     return sys_p, usr_p
 
