@@ -33,7 +33,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         model=model,
         tokenizer=tokenizer,
         max_new_tokens=max_new_tokens,
-        temperature=0.1,
+        temperature=0.0,
         do_sample=True,
         return_full_text=False,
     )
@@ -79,7 +79,7 @@ def _log_to_file(log_filepath: str, system_prompt: str, user_prompt: Union[str, 
     except Exception as e:
         print(f"Error writing to log file: {e}")
 
-def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[str]], model: str, temperature: float = 0.3,
+def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[str]], model: str, temperature: float = 0.0,
     top_p: float = 0.95, max_new_tokens: int = None, pipeline = None, log_filepath: str = None) -> Union[str, List[str]]:
 
     is_batch_of_individual_prompts = isinstance(user_prompt_str, list)
@@ -107,7 +107,7 @@ def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[s
                 _log_to_file(log_filepath, system_prompt_str, user_prompt_str, error_msg)
                 return error_msg
             finally:
-                time.sleep(50)
+                time.sleep(1)
 
         elif model.startswith("gemini"):
             api_key = os.getenv("GEMINI_KEY")

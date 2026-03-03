@@ -8,5 +8,5 @@ transformers
 bitsandbytes
 google-generativeai
 nest-asyncio
-accelerate
+accelerate 0.26.0
 jinja2
