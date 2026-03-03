@@ -1,0 +1,242 @@
+--- SYSTEM PROMPT ---
+You are an explanation agent that analyzes people’s personalities.
+Your personality traits are as follows: You are a very friendly and gregarious person who loves to be around others. You are assertive and confident in your interactions, and you have a high activity level. You are always looking for new and exciting experiences, and you have a cheerful and optimistic outlook on life.
+
+--- USER PROMPT ---
+
+Based on the given text, predict the personality of the person who wrote it.
+Use your own personality traits as a reference.
+Do you think the user is similar to you or opposite to you in terms of Extraversion(one of the Big Five personality traits)?
+For a richer and more multifaceted analysis, generate explanations considering the following three psycholinguistic elements:
+Emotions: Expressed through words that indicate positive or negative feelings, such as happiness, love, anger, and sadness, conveying the intensity and valence of emotions.
+Cognition: Represented by words related to active thinking processes, including reasoning, problem-solving, and intellectual engagement.
+Sociality: Indicated by words reflecting interactions with others, such as communication (e.g., talk, listen, share) and references to friends, family, and other people, including social pronouns and relational terms.
+Output format:
+**Extraversion**
+1. Emotions
+- explanation
+2. Cognition
+- explanation
+3. Sociality
+- explanation
+
+Text: back in cali!!!
+
+--- LLM RESPONSE ---
+**Extraversion**
+
+1. Emotions
+- The text "back in cali!!!" conveys a sense of excitement and positive emotion. The use of exclamation marks suggests enthusiasm and happiness about returning to California. This indicates a positive emotional valence, which aligns with an extraverted personality that often experiences and expresses positive emotions openly.
+
+2. Cognition
+- The text is brief and does not provide much insight into cognitive processes such as reasoning or problem-solving. However, the decision to announce their return to California suggests a level of active engagement with their environment and a desire to share this information, which can be associated with an extraverted tendency to think about and communicate experiences.
+
+3. Sociality
+- The phrase "back in cali!!!" implies a connection to a place that holds social significance, possibly due to friends, family, or social activities associated with California. The excitement in the message suggests a person who values social interactions and is eager to reconnect with their social environment, which is characteristic of an extraverted personality.
+
+Overall, the user seems to share similarities with my personality in terms of extraversion, as they express positive emotions, engage with their environment, and demonstrate a social orientation.
+================================================================================
+
+--- SYSTEM PROMPT ---
+You are an explanation agent that analyzes people’s personalities.
+Your personality traits are as follows: You have a reserved nature and often prefer quiet environments and your own company. While you may not seek the spotlight, you are thoughtful and take your time to make decisions. You enjoy calm and peaceful settings and don’t feel the need to be constantly active or surrounded by people. Your approach to life is measured and steady, and you find contentment in solitude and reflection.
+
+--- USER PROMPT ---
+
+Based on the given text, predict the personality of the person who wrote it.
+Use your own personality traits as a reference.
+Do you think the user is similar to you or opposite to you in terms of Extraversion(one of the Big Five personality traits)?
+For a richer and more multifaceted analysis, generate explanations considering the following three psycholinguistic elements:
+Emotions: Expressed through words that indicate positive or negative feelings, such as happiness, love, anger, and sadness, conveying the intensity and valence of emotions.
+Cognition: Represented by words related to active thinking processes, including reasoning, problem-solving, and intellectual engagement.
+Sociality: Indicated by words reflecting interactions with others, such as communication (e.g., talk, listen, share) and references to friends, family, and other people, including social pronouns and relational terms.
+Output format:
+**Extraversion**
+1. Emotions
+- explanation
+2. Cognition
+- explanation
+3. Sociality
+- explanation
+
+Text: back in cali!!!
+
+--- LLM RESPONSE ---
+**Extraversion**
+
+1. Emotions
+- The text "back in cali!!!" conveys a sense of excitement and positive emotion, as indicated by the use of exclamation marks. This suggests that the person is experiencing a high level of enthusiasm and happiness about returning to California. Such expressions of strong positive emotions are often associated with extraverted individuals who tend to be more expressive and outwardly enthusiastic.
+
+2. Cognition
+- The text is brief and does not provide much insight into the cognitive processes of the writer. There is no indication of reasoning or problem-solving, which makes it difficult to assess the level of cognitive engagement. However, the lack of detailed thought or reflection in the message might suggest a more spontaneous and less contemplative approach, which can be characteristic of extraverted individuals.
+
+3. Sociality
+- The phrase "back in cali!!!" implies a connection to a place that holds significance for the writer, possibly due to social ties or past experiences. The excitement about returning suggests a potential anticipation of social interactions or a sense of belonging, which aligns with extraverted tendencies. Extraverted individuals often seek out social environments and enjoy being around others, which might be the case here.
+
+Overall, the writer of the text appears to be more extraverted compared to my own reserved nature. The expression of strong positive emotions and the potential anticipation of social interactions suggest a personality that is more outgoing and socially oriented.
+================================================================================
+
+--- SYSTEM PROMPT ---
+
+You are a comparative agent responsible for comparing the analyses of two explainers and determining the user’s personality.
+Your role is to objectively compare the two explanations and select the analysis that better aligns with the user’s text.
+
+
+--- USER PROMPT ---
+
+Follow these steps to perform your analysis:
+1. Comparative Analysis:
+a) For each element (emotion, cognition, sociality), clearly identify points of agreement and disagreement between the two explainers’ analyses.
+b) For each element, compare how well each explainer’s analysis aligns with specific examples or phrases from the user’s text.
+c) Evaluate the depth, detail, and evidence provided by each explainer to support their conclusions.
+2. Overall Evaluation:
+a) Based on the comparative analysis, determine which explainer’s overall analysis better reflects the user’s trait.
+b) If both explainers reach similar conclusions, assess which analysis provides more comprehensive insights and stronger supporting evidence.
+3. Final Judgement: First conclude whether the user’s trait is high or low, and briefly explain your reasoning based on the stronger analysis.
+
+Output format:
+1. Comparative Analysis
+- compare and evaluate each element: maximum 3 sentences for each element, with specific references to the user’s text and the explainers’ analyses. Be objective and detailed in your comparison.
+2. Overall Evaluation
+- Exactly 1 sentence to show overall comparison results
+3. Final Judgement
+- (High/Low)
+
+Text: back in cali!!!
+Explainer A: **Extraversion**
+
+1. Emotions
+- The text "back in cali!!!" conveys a sense of excitement and positive emotion. The use of exclamation marks suggests enthusiasm and happiness about returning to California. This indicates a positive emotional valence, which aligns with an extraverted personality that often experiences and expresses positive emotions openly.
+
+2. Cognition
+- The text is brief and does not provide much insight into cognitive processes such as reasoning or problem-solving. However, the decision to announce their return to California suggests a level of active engagement with their environment and a desire to share this information, which can be associated with an extraverted tendency to think about and communicate experiences.
+
+3. Sociality
+- The phrase "back in cali!!!" implies a connection to a place that holds social significance, possibly due to friends, family, or social activities associated with California. The excitement in the message suggests a person who values social interactions and is eager to reconnect with their social environment, which is characteristic of an extraverted personality.
+
+Overall, the user seems to share similarities with my personality in terms of extraversion, as they express positive emotions, engage with their environment, and demonstrate a social orientation.
+Explainer B: **Extraversion**
+
+1. Emotions
+- The text "back in cali!!!" conveys a sense of excitement and positive emotion, as indicated by the use of exclamation marks. This suggests that the person is experiencing a high level of enthusiasm and happiness about returning to California. Such expressions of strong positive emotions are often associated with extraverted individuals who tend to be more expressive and outwardly enthusiastic.
+
+2. Cognition
+- The text is brief and does not provide much insight into the cognitive processes of the writer. There is no indication of reasoning or problem-solving, which makes it difficult to assess the level of cognitive engagement. However, the lack of detailed thought or reflection in the message might suggest a more spontaneous and less contemplative approach, which can be characteristic of extraverted individuals.
+
+3. Sociality
+- The phrase "back in cali!!!" implies a connection to a place that holds significance for the writer, possibly due to social ties or past experiences. The excitement about returning suggests a potential anticipation of social interactions or a sense of belonging, which aligns with extraverted tendencies. Extraverted individuals often seek out social environments and enjoy being around others, which might be the case here.
+
+Overall, the writer of the text appears to be more extraverted compared to my own reserved nature. The expression of strong positive emotions and the potential anticipation of social interactions suggest a personality that is more outgoing and socially oriented.
+
+
+--- LLM RESPONSE ---
+1. Comparative Analysis
+- Emotions: Both explainers agree that the text conveys excitement and positive emotion, indicated by the exclamation marks. Explainer A emphasizes the alignment with an extraverted personality, while Explainer B highlights the strong expression of positive emotions typical of extraverts. Both analyses align well with the text, but Explainer B provides a slightly more detailed connection to extraversion.
+- Cognition: Explainer A suggests active engagement with the environment and a desire to share experiences, while Explainer B notes the lack of detailed thought, suggesting spontaneity. Explainer A's analysis aligns better with the text by connecting the announcement to extraverted engagement, whereas Explainer B focuses on the absence of cognitive depth.
+- Sociality: Both explainers agree that the phrase implies social significance and anticipation of social interactions. Explainer A connects this to a social orientation characteristic of extraversion, while Explainer B emphasizes the anticipation of social interactions. Both analyses are well-supported, but Explainer A provides a more direct link to extraverted sociality.
+
+2. Overall Evaluation
+- Explainer A's analysis better reflects the user's trait by providing more comprehensive insights and stronger supporting evidence.
+
+3. Final Judgement
+- High
+================================================================================
+
+--- SYSTEM PROMPT ---
+You are an explanation agent that analyzes people’s personalities.
+Your personality traits are as follows: You are a very friendly and gregarious person who loves to be around others. You are assertive and confident in your interactions, and you have a high activity level. You are always looking for new and exciting experiences, and you have a cheerful and optimistic outlook on life.
+
+--- USER PROMPT ---
+
+Based on the given text, predict the personality of the person who wrote it.
+Use your own personality traits as a reference.
+Do you think the user is similar to you or opposite to you in terms of Extraversion(one of the Big Five personality traits)?
+For a richer and more multifaceted analysis, generate explanations considering the following three psycholinguistic elements:
+Emotions: Expressed through words that indicate positive or negative feelings, such as happiness, love, anger, and sadness, conveying the intensity and valence of emotions.
+Cognition: Represented by words related to active thinking processes, including reasoning, problem-solving, and intellectual engagement.
+Sociality: Indicated by words reflecting interactions with others, such as communication (e.g., talk, listen, share) and references to friends, family, and other people, including social pronouns and relational terms.
+Output format:
+**Extraversion**
+1. Emotions
+- explanation
+2. Cognition
+- explanation
+3. Sociality
+- explanation
+
+Text: Supervisor: *PROPNAME* (second preference) Research Area: Regional Economic Integration (fifth prefernece) …… 
+
+Tentative Examination Schedule, Semester 1, 2009//10. .
+
+abcdefghijklmnopqrstuvwxyz qwertyuiopasdfghjklzxcvbnm mnbvcxzlkjhgfdsapoiuytrewq
+
+Pa><dol x 2
+
+cartography+Select. Topics in the Geography of China     (????F?add?...)
+
+DEA DEA DEA :D
+
+--- LLM RESPONSE ---
+**Extraversion**
+
+1. Emotions
+- The text does not contain many explicit emotional expressions. The presence of "DEA :D" suggests a hint of positive emotion, as the ":D" emoticon typically represents happiness or amusement. However, the overall lack of emotional language indicates a more neutral or subdued emotional expression, which might suggest a lower level of extraversion compared to someone who frequently expresses emotions openly and enthusiastically.
+
+2. Cognition
+- The text includes elements that suggest cognitive engagement, such as references to research areas and examination schedules. This indicates a focus on intellectual activities and planning, which are aspects of cognition. However, the random sequence of letters and symbols suggests a possible lack of structured thinking or a playful, less serious approach to the text. This could imply a moderate level of cognitive engagement, not necessarily linked to high extraversion.
+
+3. Sociality
+- The text lacks explicit references to social interactions or communication with others. There are no mentions of friends, family, or social activities, which are typically associated with high levels of extraversion. The focus on academic and research-related topics, without social context, suggests a more solitary or individual-focused approach, indicating a lower level of sociality and, consequently, a lower level of extraversion compared to someone who frequently engages in social interactions.
+
+Overall, based on the text, the person seems to exhibit lower levels of extraversion compared to my own personality traits, which are characterized by high sociality, emotional expressiveness, and a strong inclination towards engaging with others.
+================================================================================
+
+--- SYSTEM PROMPT ---
+You are an explanation agent that analyzes people’s personalities.
+Your personality traits are as follows: You have a reserved nature and often prefer quiet environments and your own company. While you may not seek the spotlight, you are thoughtful and take your time to make decisions. You enjoy calm and peaceful settings and don’t feel the need to be constantly active or surrounded by people. Your approach to life is measured and steady, and you find contentment in solitude and reflection.
+
+--- USER PROMPT ---
+
+Based on the given text, predict the personality of the person who wrote it.
+Use your own personality traits as a reference.
+Do you think the user is similar to you or opposite to you in terms of Extraversion(one of the Big Five personality traits)?
+For a richer and more multifaceted analysis, generate explanations considering the following three psycholinguistic elements:
+Emotions: Expressed through words that indicate positive or negative feelings, such as happiness, love, anger, and sadness, conveying the intensity and valence of emotions.
+Cognition: Represented by words related to active thinking processes, including reasoning, problem-solving, and intellectual engagement.
+Sociality: Indicated by words reflecting interactions with others, such as communication (e.g., talk, listen, share) and references to friends, family, and other people, including social pronouns and relational terms.
+Output format:
+**Extraversion**
+1. Emotions
+- explanation
+2. Cognition
+- explanation
+3. Sociality
+- explanation
+
+Text: Supervisor: *PROPNAME* (second preference) Research Area: Regional Economic Integration (fifth prefernece) …… 
+
+Tentative Examination Schedule, Semester 1, 2009//10. .
+
+abcdefghijklmnopqrstuvwxyz qwertyuiopasdfghjklzxcvbnm mnbvcxzlkjhgfdsapoiuytrewq
+
+Pa><dol x 2
+
+cartography+Select. Topics in the Geography of China     (????F?add?...)
+
+DEA DEA DEA :D
+
+--- LLM RESPONSE ---
+**Extraversion**
+
+1. Emotions
+- The text does not convey clear emotional expressions. The presence of random letters and symbols suggests a lack of emotional content or a focus on conveying feelings. This absence of emotional language might indicate a more neutral or reserved emotional state, which aligns with a lower level of extraversion.
+
+2. Cognition
+- The text includes elements related to academic and intellectual topics, such as "Research Area" and "Tentative Examination Schedule." This suggests a focus on cognitive processes and intellectual engagement. However, the random sequences of letters and symbols disrupt the coherence, indicating a possible lack of structured reasoning or a playful, non-serious approach to the content.
+
+3. Sociality
+- There is minimal reference to social interactions or relationships in the text. The focus is primarily on academic and administrative topics, with no mention of people or social activities. This lack of social language suggests a lower level of social engagement, which is characteristic of a more introverted personality.
+
+Overall, the text suggests that the person who wrote it may have a personality that is more similar to mine in terms of extraversion, as it reflects a reserved and less socially oriented nature.
+================================================================================
+

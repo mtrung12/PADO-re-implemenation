@@ -34,7 +34,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         tokenizer=tokenizer,
         max_new_tokens=max_new_tokens,
         temperature=0.0,
-        do_sample=True,
+        do_sample=False,
         return_full_text=False,
     )
     return pipe
