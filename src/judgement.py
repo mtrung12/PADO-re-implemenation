@@ -6,8 +6,6 @@ import re
 
 def generate_judgement(ctrait: str, text: Union[str, List[str]], explanation1: Union[str, List[str]], explanation2: Union[str, List[str]], model_name: str, max_new_tokens: int = None, pipeline = None, log_filepath: str = None):
     sys_p, usr_p = judgement_prompt_build(ctrait, text, explanation1, explanation2)
-    # All requests are now sent to generate_response, which handles single prompts for API models
-    # and batching for HuggingFace models.
     return generate_response(sys_p, usr_p, model=model_name, max_new_tokens=max_new_tokens, pipeline=pipeline, log_filepath=log_filepath)
 
 
