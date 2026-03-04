@@ -47,8 +47,6 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         return_full_text=False,
     )
     
-    torch.cuda.empty_cache()
-    gc.collect()
     return pipe
 
 def extract_json_from_response(response_text: str) -> str:
