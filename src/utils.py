@@ -3,7 +3,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 from openai import OpenAI
 from dotenv import load_dotenv
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, pipeline, GenerationConfig
 from .prompts import create_message_openai, create_message_HF
 from typing import List, Union
 from tqdm import tqdm
@@ -18,30 +18,34 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
         bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.float16
+        bnb_4bit_compute_dtype=torch.float16,
     )
-    # Load tokenizer
+
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    tokenizer.pad_token = tokenizer.eos_token 
-    # Load model
+    tokenizer.pad_token = tokenizer.eos_token
+
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
-        torch_dtype=torch.float16,
         device_map="auto",
+        torch_dtype=torch.float16,
         low_cpu_mem_usage=True,
-        attn_implementation="sdpa"
+        attn_implementation="sdpa",          # ← Back to sdpa (T4 compatible)
     )
-    # Create generation pipeline
+
+    generation_config = GenerationConfig(
+        max_new_tokens=max_new_tokens,
+        temperature=0.0,
+        do_sample=False,
+        pad_token_id=tokenizer.eos_token_id,
+    )
+
     pipe = pipeline(
         "text-generation",
         model=model,
         tokenizer=tokenizer,
-        max_new_tokens=max_new_tokens,
-        temperature=0.0,
-        do_sample=False,
+        generation_config=generation_config,
         return_full_text=False,
-        pad_token_id=tokenizer.eos_token_id
     )
     return pipe
 
