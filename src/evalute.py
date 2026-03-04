@@ -7,6 +7,14 @@ from .utils import get_HF_pipeline
 import os
 import datetime
 
+
+def get_base_output_dir():
+    if os.environ.get('KAGGLE_KERNEL_RUN_TYPE') or os.path.exists('/kaggle/working'):
+        return '/kaggle/working/PADO-re-implemenation'
+    return '.' 
+
+BASE_DIR = get_base_output_dir()
+
 # Mapping from dataframe columns to full trait names
 TRAIT_MAP = {
     'cEXT': 'Extraversion',
@@ -54,14 +62,14 @@ def evaluate_dataframe(df: pd.DataFrame, model_name: str, text_column: str = "te
     
     log_filepath = None
     if log_llm_output:
-        log_dir = "logs"
+        log_dir = os.path.join(BASE_DIR, "logs")
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         log_filepath = os.path.join(log_dir, f"llm_output_{timestamp}.log")
 
     # Create result directory and generate report path
-    report_dir = "result"
+    report_dir = os.path.join(BASE_DIR, "result")
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
