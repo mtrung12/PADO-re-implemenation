@@ -1,4 +1,5 @@
 import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 from openai import OpenAI
 from dotenv import load_dotenv
 import torch
@@ -26,6 +27,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
+        torch_dtype=torch.float16,
         device_map="auto",
         attn_implementation="sdpa"
     )
@@ -38,6 +40,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         temperature=0.0,
         do_sample=False,
         return_full_text=False,
+        pad_token_id=tokenizer.eos_token_id
     )
     return pipe
 
