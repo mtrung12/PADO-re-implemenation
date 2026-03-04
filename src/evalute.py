@@ -12,7 +12,7 @@ import torch
 
 def get_base_output_dir():
     if os.environ.get('KAGGLE_KERNEL_RUN_TYPE') or os.path.exists('/kaggle/working'):
-        return '/kaggle/working/PADO-re-implemenation'
+        return '/kaggle/working/PADO-re-implemenation/'
     return '.' 
 
 BASE_DIR = get_base_output_dir()
