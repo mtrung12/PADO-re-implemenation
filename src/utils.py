@@ -9,6 +9,7 @@ from tqdm import tqdm
 import google.generativeai as genai
 import time
 import json
+import gc
 
 def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
     # Quantization config
@@ -25,7 +26,8 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
-        device_map="auto"
+        device_map="auto",
+        attn_implementation="sdpa"
     )
     # Create generation pipeline
     pipe = pipeline(
@@ -57,7 +59,7 @@ def extract_json_from_response(response_text: str) -> str:
         # Return an empty string if no valid JSON object is found
         return ""
 
-def _log_to_file(log_filepath: str, system_prompt: str, user_prompt: Union[str, List[str]], response: Union[str, List[str]]):
+def log_to_file(log_filepath: str, system_prompt: str, user_prompt: Union[str, List[str]], response: Union[str, List[str]]):
     if not log_filepath:
         return
     try:
@@ -100,11 +102,11 @@ def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[s
             params["messages"] = message
             try:
                 content = client.chat.completions.create(**params).choices[0].message.content
-                _log_to_file(log_filepath, system_prompt_str, user_prompt_str, content)
+                log_to_file(log_filepath, system_prompt_str, user_prompt_str, content)
                 return content
             except Exception as e:
                 error_msg = f"Error: {e}"
-                _log_to_file(log_filepath, system_prompt_str, user_prompt_str, error_msg)
+                log_to_file(log_filepath, system_prompt_str, user_prompt_str, error_msg)
                 return error_msg
             finally:
                 time.sleep(1)
@@ -121,11 +123,11 @@ def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[s
             try:
                 response_obj = gemini_model.generate_content(user_prompt_str)
                 content = response_obj.text
-                _log_to_file(log_filepath, system_prompt_str, user_prompt_str, content)
+                log_to_file(log_filepath, system_prompt_str, user_prompt_str, content)
                 return content
             except Exception as e:
                 error_msg = f"Error: {e}"
-                _log_to_file(log_filepath, system_prompt_str, user_prompt_str, error_msg)
+                log_to_file(log_filepath, system_prompt_str, user_prompt_str, error_msg)
                 return error_msg
             finally:
                 time.sleep(50)
@@ -140,7 +142,7 @@ def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[s
             ]
             outputs = pipeline(prompts)
             results = [out[0]['generated_text'] for out in outputs]
-            _log_to_file(log_filepath, system_prompt_str, user_prompt_str, results)
+            log_to_file(log_filepath, system_prompt_str, user_prompt_str, results)
             return results
         else: # Single HF prompt
             message = create_message_HF(system_prompt_str, user_prompt_str)
@@ -149,5 +151,8 @@ def generate_response(system_prompt_str: str, user_prompt_str: Union[str, List[s
             )
             outputs = pipeline(prompt)
             result = outputs[0]['generated_text']
-            _log_to_file(log_filepath, system_prompt_str, user_prompt_str, result)
+            log_to_file(log_filepath, system_prompt_str, user_prompt_str, result)
+            del outputs
+            gc.collect()
+            torch.cuda.empty_cache()
             return result
