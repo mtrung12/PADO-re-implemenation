@@ -118,6 +118,7 @@ def evaluate_dataframe(df: pd.DataFrame, model_name: str, text_column: str = "te
                 all_predictions.append('unknown')
         
         if is_hf_pipeline:
+                del explanations_high, explanations_low, judgement_text
                 gc.collect()
                 torch.cuda.empty_cache()
 
