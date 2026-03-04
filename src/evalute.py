@@ -6,6 +6,8 @@ from sklearn.metrics import classification_report
 from .utils import get_HF_pipeline
 import os
 import datetime
+import gc
+import torch
 
 
 def get_base_output_dir():
@@ -114,6 +116,10 @@ def evaluate_dataframe(df: pd.DataFrame, model_name: str, text_column: str = "te
                 all_predictions.append('low')
             else:
                 all_predictions.append('unknown')
+        
+        if is_hf_pipeline:
+                gc.collect()
+                torch.cuda.empty_cache()
 
         results_df[pred_column_name] = all_predictions
 
