@@ -17,36 +17,28 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
         bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.float16,
+        bnb_4bit_compute_dtype=torch.float16
     )
-
+    # Load tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    tokenizer.pad_token = tokenizer.eos_token
-
+    tokenizer.pad_token = tokenizer.eos_token 
+    # Load model
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
         device_map="auto",
-        torch_dtype=torch.float16,
-        low_cpu_mem_usage=True,
-        attn_implementation="sdpa",
+        attn_implementation="sdpa"
     )
-
-    generation_config = GenerationConfig(
-        temperature=0.0,
-        do_sample=False,
-        pad_token_id=tokenizer.eos_token_id,
-    )
-    model.generation_config = generation_config   
-
+    # Create generation pipeline
     pipe = pipeline(
         "text-generation",
         model=model,
         tokenizer=tokenizer,
-        return_full_text=False,
         max_new_tokens=max_new_tokens,
+        temperature=0.0,
+        do_sample=False,
+        return_full_text=False,
     )
-    
     return pipe
 
 def extract_json_from_response(response_text: str) -> str:
