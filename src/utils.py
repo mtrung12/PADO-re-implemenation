@@ -13,7 +13,6 @@ import json
 import gc
 
 def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
-    # Quantization config
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
@@ -30,7 +29,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         device_map="auto",
         torch_dtype=torch.float16,
         low_cpu_mem_usage=True,
-        attn_implementation="sdpa",          # ← Back to sdpa (T4 compatible)
+        attn_implementation="sdpa",
     )
 
     generation_config = GenerationConfig(
@@ -39,14 +38,17 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         do_sample=False,
         pad_token_id=tokenizer.eos_token_id,
     )
+    model.generation_config = generation_config   
 
     pipe = pipeline(
         "text-generation",
         model=model,
         tokenizer=tokenizer,
-        generation_config=generation_config,
         return_full_text=False,
     )
+    
+    torch.cuda.empty_cache()
+    gc.collect()
     return pipe
 
 def extract_json_from_response(response_text: str) -> str:
