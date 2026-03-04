@@ -29,6 +29,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         quantization_config=bnb_config,
         torch_dtype=torch.float16,
         device_map="auto",
+        low_cpu_mem_usage=True,
         attn_implementation="sdpa"
     )
     # Create generation pipeline
