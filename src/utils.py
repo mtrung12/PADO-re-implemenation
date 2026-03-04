@@ -33,7 +33,6 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
     )
 
     generation_config = GenerationConfig(
-        max_new_tokens=max_new_tokens,
         temperature=0.0,
         do_sample=False,
         pad_token_id=tokenizer.eos_token_id,
@@ -45,6 +44,7 @@ def get_HF_pipeline(model_name: str, max_new_tokens: int = 512):
         model=model,
         tokenizer=tokenizer,
         return_full_text=False,
+        max_new_tokens=max_new_tokens,
     )
     
     return pipe
