@@ -102,10 +102,17 @@ def evaluate_dataframe(df: pd.DataFrame, model_name: str, text_column: str = "te
         for text in tqdm(all_texts, desc=progress_desc):
             # Explanations
             explanations_high = generate_explaination(trait_full, text, model_name, induce='high', prompt_type='pado', max_new_tokens=max_new_tokens, pipeline=pipeline, log_filepath=log_filepath)
+            torch.cuda.empty_cache()
+            gc.collect()
+            
             explanations_low = generate_explaination(trait_full, text, model_name, induce='low', prompt_type='pado', max_new_tokens=max_new_tokens, pipeline=pipeline, log_filepath=log_filepath)
-
+            torch.cuda.empty_cache()
+            gc.collect()
+            
             # Judgements
             judgement_text = generate_judgement(trait_full, text, explanations_high, explanations_low, model_name, max_new_tokens=max_new_tokens, pipeline=pipeline, log_filepath=log_filepath)
+            torch.cuda.empty_cache()
+            gc.collect()
             
             # Predictions
             prediction = extract_judgement_prediction(str(judgement_text))
