@@ -35,9 +35,6 @@ def pado_predict(text: str, trait_short: str, model_name: str, prompt_type='pado
     
     trait_full = TRAIT_MAP[trait_short]
 
-    # This function is designed to process one text at a time.
-    # The `evaluate_dataframe` function contains its own, separate batching logic.
-
     # Generate explanations for both high and low induction scenarios.
     if progress_verbose:
         tqdm.write(f"[{item_index + 1}/{total_items}] Trait {trait_full}: High explanation...")
